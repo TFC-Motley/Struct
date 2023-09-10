@@ -1,0 +1,12 @@
+dependencies = { }
+
+[package]
+name = "Struct"
+version = "0.1.0"
+description = "Interpret bytes as packed binary data"
+repository = "temp.com"
+keywords = [ "struct", "packed", "binary" ]
+license = "MIT"
+
+[dev-dependencies]
+test = "1.0.1"
