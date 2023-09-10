@@ -61,9 +61,9 @@ module {
       let a_nat: Nat = Value.toNat(register[0]);
       let a_int: Int = Value.toInt(register[1]);
       let a_txt: Text = Value.toText(register[2]);
-      print("Nat", debug_show(a_nat), debug_show(e_nat));
-      print("Int", debug_show(a_int), debug_show(e_int));
-      print("Text", debug_show(a_txt), debug_show(e_txt));
+      // print("Nat", debug_show(a_nat), debug_show(e_nat));
+      // print("Int", debug_show(a_int), debug_show(e_int));
+      // print("Text", debug_show(a_txt), debug_show(e_txt));
       assert (a_nat == e_nat) and (a_int == e_int) and (a_txt == e_txt)
     });
 

@@ -31,6 +31,8 @@ import Struct "mo:Struct";
 
 let schema: Struct.Schema = [#n(8), #i(4), #t(32)];
 
+// <Register>: A register is an array of values that mirrors the field order defined in the schema
+//
 // The Register module contains helper functions for wrapping and unwrapping values
 //
 // Where each <Value> can be one of:
@@ -41,21 +43,30 @@ let schema: Struct.Schema = [#n(8), #i(4), #t(32)];
 //   #p - Principal Identifier
 //   #b - Boolean
 //
-// TODO: Other primitive types, such as Nat8, Int16, Float, Char, ..., are all converted to one of these base values
+// TODO: Other primitive types, such as: Nat8; Int16; Float; Char; etc. are all converted to one of these base values
 // when passed to a helper function. (These functions don't exist, yet).
 
 let { Register } = Struct;
 
-// <Register>: A register is an array of values that must mirror the field order defined in the schema
-
-let register: Struct.Register = [
-  Register.wrapNat(123456789),
-  Register.wrapInt(-123456789),
-  Register.wrapText("Motoko is fun!...")
-];
+let register: Struct.Register = [#n(123456789), #i(-123456789), #t("Motoko is fun!...")];
 
 // The pack & unpack methods are used to serialize and deserialize packed binary records
+//
+// If successful, the pack() method will always return the same sized blob for a given schema
+//
 
-Struct.pack(schema, register)
+switch( Struct.pack(schema, register) ){
+  case null _ // Occurs if one or more register fields don't match the schema fields
+  case (?blob) {
+    switch ( Struct.unpack(schema, blob) ){
+        case null _ // Occurs if the blob values don't match the schema
+        case (?reg) {
+          assert Register.unwrapNat(reg[0]) == 123456789;
+          assert Register.unwrapInt(reg[1]) == -123456789;
+          assert Register.unwrapText(reg[2]) == "Motoko is fun!...";
+        }
+    }
+  }
+}
 
 ```
